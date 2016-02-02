@@ -13,16 +13,19 @@
 class OpenGLManager
 {
 public:
+	static bool drawCircle, drawSquare, drawTriangle;
+
 	OpenGLManager();
 	~OpenGLManager();
 
 	void setWindowSize(int x, int y);
 	void initialize(int argc, char** argv);
-	void glLoop(int argc, char** argv);
+	void glLoop();
+	static void drawScene();
+	static void handleResize(int w, int h);
 
 private:
 	int windowSize[2];
-	static bool drawCircle, drawSquare, drawTriangle;
 	Fl_Window *window;
 	Fl_Button *square;
 	Fl_Button *circle;
@@ -30,8 +33,6 @@ private:
 	Fl_Button *clear;
 	Fl_Button *quit;
 
-	static void drawScene();
-	static void handleResize(int w, int h);
 	void initRendering();
 
 	static void square_button_cb(Fl_Widget* obj, void*);

@@ -8,6 +8,9 @@ int main(int argc, char** argv) {
 	OpenGLManager *GL = new OpenGLManager();
 	GL->setWindowSize(800, 600);
 	GL->initialize(argc, argv);
-	GL->glLoop(argc, argv);
+	//Set handler functions for drawing, keypresses, and window resizes
+	glutDisplayFunc(GL->drawScene);
+	glutReshapeFunc(GL->handleResize);
+	glutMainLoop(); //Start the main loop
 	return 0;
 }

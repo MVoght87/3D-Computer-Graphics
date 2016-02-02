@@ -1,12 +1,22 @@
 #include "OpenGLManager.h"
 
+bool OpenGLManager::drawCircle = false;
+bool OpenGLManager::drawSquare = false;
+bool OpenGLManager::drawTriangle = false;
+
+float pos1[] = { 0, 1, 0 };
+Square *sq = new Square(pos1, 0);
+
+float pos2[] = { -1.5, 1, 0 };
+Triangle *tr = new Triangle(pos2, 0, 0);
+
+float pos3[] = { 1.5, 1, 0 };
+Circle* cr = new Circle(pos3, 0.5);
 
 OpenGLManager::OpenGLManager()
 {
 	this->windowSize[0] = 600;
 	this->windowSize[1] = 400;
-
-	drawCircle = drawSquare = drawTriangle = false;
 }
 
 
@@ -47,14 +57,13 @@ void OpenGLManager::initialize(int argc, char** argv)
 
 	window->show(argc, argv);
 	window->end();
+
+	window->callback((Fl_Callback*)quit_button_cb, this);
 }
 
-void OpenGLManager::glLoop(int argc, char** argv)
+void OpenGLManager::glLoop()
 {
-	//Set handler functions for drawing, keypresses, and window resizes
-	glutDisplayFunc(this->drawScene);
-	glutReshapeFunc(this->handleResize);
-	glutMainLoop(); //Start the main loop
+
 }
 
 void OpenGLManager::drawScene()
@@ -64,17 +73,17 @@ void OpenGLManager::drawScene()
 	glMatrixMode(GL_MODELVIEW); //Switch to the drawing perspective
 	glLoadIdentity(); //Reset the drawing perspective
 
-	float pos3[] = { 1.5, 1, 0 };
-	Circle *cr = new Circle(pos3, 0.5);
-	cr->draw();
+	if (drawCircle) {
+		cr->draw();
+	}
 			
-	float pos1[] = { 0, 1, 0 };
-	Square *sq = new Square(pos1, 0);
-	sq->draw();
-	
-	float pos2[] = { -1.5, 1, 0 };
-	Triangle *tr = new Triangle(pos2, 0, 0);
-	tr->draw();
+	if (drawSquare) {
+		sq->draw();
+	}
+
+	if (drawTriangle) {
+		tr->draw();
+	}
 
 	glutSwapBuffers(); //Send the 3D scene to the screen
 }
@@ -100,20 +109,27 @@ void OpenGLManager::initRendering()
 
 void OpenGLManager::square_button_cb(Fl_Widget* obj, void* b){
 	drawSquare = true;
+	glutPostRedisplay();
 }
 
 void OpenGLManager::circle_button_cb(Fl_Widget* obj, void* b){
 	drawCircle = true;
+	glutPostRedisplay();
 }
 
 void OpenGLManager::triangle_button_cb(Fl_Widget* obj, void* b){
 	drawTriangle = true;
+	glutPostRedisplay();
 }
 
 void OpenGLManager::clear_button_cb(Fl_Widget* obj, void* b){
 	drawCircle = drawSquare = drawTriangle = false;
+	glutPostRedisplay();
 }
 
 void OpenGLManager::quit_button_cb(Fl_Widget* obj, void* b){
-
+	delete cr;
+	delete tr;
+	delete sq;
+	glutDestroyWindow(glutGetWindow());
 }
