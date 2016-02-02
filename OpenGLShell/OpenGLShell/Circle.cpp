@@ -23,6 +23,7 @@ Circle::~Circle()
 
 void Circle::draw()
 {
+
 	int triangleAmount = 30;
 	float* position = Shape::getPosition();
 	float twicePi = 2.0f * (float)M_PI;

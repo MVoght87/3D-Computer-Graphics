@@ -1,10 +1,12 @@
 #pragma once
 #include <GL\glew.h>
-#include <GL\freeglut.h>
+#include <GL\glut.h>
 
 class Shape
 {
 public:
+	bool drawShape;
+
 	Shape();
 	Shape(float position []);
 	~Shape();
